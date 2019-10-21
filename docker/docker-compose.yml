@@ -1,0 +1,111 @@
+# Copyright 2019 ChemAxon Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: '3'
+services:
+  jws-config:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-config/run-jws-config
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/"
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "config:/opt/chemaxon/jws/jws-config/common-config"
+  jws-discovery:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-discovery/run-jws-discovery
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/"
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+  jws-calculations:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-calculations/run-jws-calculations
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-db:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-db/run-jws-db
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "dbdata:/opt/chemaxon/jws/jws-db/data/"
+      - "license:/opt/chemaxon/jws/license"
+  jws-io:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-io/run-jws-io
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-structure:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-structure/run-jws-structure
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-markush:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-markush/run-jws-markush
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-gateway:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-gateway/run-jws-gateway
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+    
+volumes:
+  logdata:
+  dbdata:
+  license:
+  config:
