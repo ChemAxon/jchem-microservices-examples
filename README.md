@@ -2,6 +2,8 @@
 
 This repsoitory holds various examples for JChem Microservices.
 
-1. [docker](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/docker) example (Formely known as [jchem-microservices-docker-example](https://github.com/ChemAxon/jchem-microservices-docker-example))
-2. [HA-loadbalance](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/loadbalance) example (Formely known as [jws-load-balanced-example](https://github.com/ChemAxon/jws-load-balanced-example))
+1. [docker](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/docker): (Formely known as [jchem-microservices-docker-example](https://github.com/ChemAxon/jchem-microservices-docker-example)) how to dockerize the microservices
+2. [HA-loadbalance](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/loadbalance): (Formely known as [jws-load-balanced-example](https://github.com/ChemAxon/jws-load-balanced-example)) how to setup High-Availability with JChem Microservices DB
+3. [external-beans](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/external-beans): How to add external beans / filters
+4. [migration](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/migration): How to migrate data from JChem Webservices Classic ( / JChem tables ) to JChem Microservices
 
