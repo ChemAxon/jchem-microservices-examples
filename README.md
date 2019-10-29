@@ -7,3 +7,12 @@ This repsoitory holds various examples for JChem Microservices.
 3. [external-beans](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/external-beans): How to add external beans / filters
 4. [migration](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/migration): How to migrate data from JChem Webservices Classic ( / JChem tables ) to JChem Microservices
 
+# Documentation
+
+Our documentation page is: https://docs.chemaxon.com/display/docs/JChem+Microservices
+
+# Demo
+
+Or demo page is: https://jchem-microservices.chemaxon.com
+
+This is a live demo portal with swagger that you can use to generate runnable client code and and also provides `curl` commands.
