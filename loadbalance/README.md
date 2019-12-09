@@ -20,6 +20,7 @@ These steps must be executed on every node of the swarm or alternatively swarm r
       <interface>10.0.*.*</interface>
     </interfaces>
 ```
+On the other hand this mask should prevent hazelcast from finding ip addresses outside docker swarm. IP addresses found by hazelcast and signed on discovery service can be monitored in [eureka](http://localhost:8761/eureka/apps).
 
 
 # Execute
