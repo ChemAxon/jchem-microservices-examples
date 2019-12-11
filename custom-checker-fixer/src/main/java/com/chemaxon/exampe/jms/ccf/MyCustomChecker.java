@@ -34,8 +34,8 @@ public class MyCustomChecker extends ExternalStructureChecker {
 
     @Override
     protected StructureCheckerResult check1(Molecule molecule) {
-        List<MolAtom> atomsWithMoreProtonThanOxygen = molecule.atoms().stream().filter(atom -> atom.getAtno() > PeriodicSystem.O)
-                .collect(Collectors.toList());
+        List<MolAtom> atomsWithMoreProtonThanOxygen = molecule.atoms().stream()
+                .filter(atom -> atom.getAtno() > PeriodicSystem.O).collect(Collectors.toList());
         return new DefaultExternalStructureCheckerResult(this, atomsWithMoreProtonThanOxygen, new ArrayList<>(),
                 molecule, "These atoms have more protons than Oxygen");
     }
