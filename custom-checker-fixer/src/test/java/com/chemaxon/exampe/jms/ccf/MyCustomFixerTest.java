@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import chemaxon.checkers.result.StructureCheckerResult;
-import chemaxon.formats.MolExporter;
 import chemaxon.formats.MolImporter;
 import chemaxon.struc.Molecule;
 import chemaxon.struc.PeriodicSystem;
