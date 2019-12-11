@@ -1,0 +1,55 @@
+import org.gradle.internal.logging.text.StyledTextOutput;
+import org.gradle.internal.logging.text.StyledTextOutputFactory;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style;
+
+
+plugins {
+    id 'java-library'
+}
+
+checkIfSetupIsAcceptable()
+
+repositories {
+    jcenter()
+    maven {
+        url "${chemaxonRepositoryUrl}/libs-release"
+        credentials {
+            username = chemaxonRepositoryUser
+            password = chemaxonRepositoryPassword
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.chemaxon:structurechecker-api:19.25.0'
+    implementation 'com.chemaxon:io-all:19.25.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+}
+
+test {
+    // Use junit platform for unit tests
+    useJUnitPlatform()
+}
+
+private void checkIfSetupIsAcceptable() {
+    def missing = []
+    appendMissing('chemaxonRepositoryUser', missing)
+    appendMissing('chemaxonRepositoryPassword', missing)
+    appendMissing('chemaxonRepositoryUrl', missing)
+    if (!missing.isEmpty()) {
+        System.setProperty('org.gradle.color.error', 'RED')
+        logger.error("Gradle is not set up properly. Missing properties: ${missing}")
+        logger.error("please follow the guide here: https://chemaxon.com/products/jchem-engines/download#gradle-panel")
+        def styledText = services.get(StyledTextOutputFactory).create("setupError")
+        styledText.withStyle(Style.Failure).println("please set these properties: ${missing} \nmore information: https://chemaxon.com/products/jchem-engines/download#gradle-panel")
+        throw new GradleException("The following settings are missing: ${missing}, please follow the guide here: https://chemaxon.com/products/jchem-engines/download#gradle-panel to find out your password and username, and add them to gradle.properties file")
+    }
+}
+
+private void appendMissing(String key, List<String> missingList) {
+    if (!project.hasProperty(key) || !project[key]) {
+        missingList << key
+    }
+}
