@@ -20,9 +20,7 @@ public class MyCustomFixer extends AbstractStructureFixer {
 
     @Override
     public boolean fix(StructureCheckerResult checkerResult) {
-        checkerResult.getAtoms().forEach(atom -> {
-            atom.setAtno(PeriodicSystem.O);
-        });
+        checkerResult.getAtoms().forEach(atom -> atom.setAtno(PeriodicSystem.O));
         return true;
     }
 
