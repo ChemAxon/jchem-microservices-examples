@@ -1,6 +1,6 @@
-# How to write custom Structre Checker - Structure Fixer for JChem Micorservices.
+# How to write custom Structure Checker - Structure Fixer for JChem Microservices
 
-This repository contains an example project, how to create your own Structure Checkers and Structure Fixers. In the end, you can build the application and use the jar in JChem Microservices.
+This repository contains an example project, on how to create your own Structure Checkers and Structure Fixers. In the end, you can build the application and use the jar in JChem Microservices.
 
 ## How to build the project
 
@@ -33,12 +33,12 @@ Send a request with content:
   }
 }
 ```
-to `jws-checker-fixer/rest-v1/checker/` endpoint. To use your own Checker.
+to `jws-checker-fixer/rest-v1/checker/` endpoint.
 
 ### What you should expect
 
 Our dummy checker checks for atoms with higher atom number than Oxygen. In the input we have
-a chlorine atom, that should be found by the checker 
+a Chlorine atom, that should be found by the checker 
 
 ### How to use our fixer with our checker
 
@@ -74,4 +74,4 @@ Example input:
 
 #### What you should expect
 
-Our dummy fixer replaces all atoms found by the checker woth oxygen. In the final result molecule you should not see any chlorine atoms, but oxygens on their places.
+Our dummy fixer replaces all atoms found by the checker with Oxygen. In the final result molecule you should not see any Chlorine atoms, but Oxygens in their places.
