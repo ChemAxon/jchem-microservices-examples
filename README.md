@@ -7,6 +7,7 @@ This repsoitory holds various examples for JChem Microservices.
 3. [external-beans](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/external-beans): How to add external beans / filters
 4. [migration](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/migration): How to migrate data from JChem Webservices Classic ( / JChem tables ) to JChem Microservices
 5. [custom-checker-fixer](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/custom-checker-fixer): How to add your custom StructureChecker and StructureFixerImplementations to JMS.
+6. [official-docker-images](https://github.com/ChemAxon/jchem-microservices-examples/tree/master/official-docker-images): Example of how to use official docker images.
 
 # Documentation
 
