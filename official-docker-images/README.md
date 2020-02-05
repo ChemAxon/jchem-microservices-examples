@@ -1,7 +1,7 @@
 # Disclaimer
 
 This is just a quick example. If you use this example to build your system,
-than be prepared to do you own securty settings. Feel free to change any parts
+than be prepared to do your own securty settings. Feel free to change any parts
 to make your life easier, this version only solves the purpose to get you started.
 
 # About
