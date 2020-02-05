@@ -8,7 +8,7 @@ to make your life easier, this version only solves the purpose to get you starte
 
 This is an example of how to use the official docker images.
 For this example to use you will need licenses for the JChem Microservices
-Modules (downloaded to this folder as `license.cxl` and __docker__ and 
+Modules (downloaded to this folder as `license.cxl`) and __docker__ and 
 __docker-compose__ installed on your system.
 
 # How to run
