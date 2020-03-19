@@ -29,7 +29,7 @@ In the end the port 8080 will be open and forwared towards the outer world.
 
 * `/app/jws/jws-db/data` folder contains all the data you uplaod to JMS DB.
 * `/app/jws/jws-config/common-config` folder conatins all the configurations for the services
-* `/app/jws/logs/` fodler contains all the log files
+* `/app/jws/logs/` folder contains all the log files
 
 These folders in a production environment could be on volumes depending on your 
 needs, but this is only a kick-starter example, it does not aim to teach docker 
