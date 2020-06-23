@@ -27,7 +27,7 @@ In the end the port 8080 will be open and forwared towards the outer world.
 
 # What could be on volumes?
 
-* `/app/jws/jws-db/data` folder contains all the data you uplaod to JMS DB.
+* `/app/jws/jws-db/data` folder contains all the data you upload to JMS DB.
 * `/app/jws/jws-config/common-config` folder conatins all the configurations for the services
 * `/app/jws/logs/` folder contains all the log files
 
