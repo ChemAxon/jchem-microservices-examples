@@ -33,16 +33,9 @@
 <hazelcast xmlns="http://www.hazelcast.com/schema/config"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://www.hazelcast.com/schema/config
-           http://www.hazelcast.com/schema/config/hazelcast-config-3.12.xsd">
-
-    <group>
-        <name>dev</name>
-    </group>
-    <management-center enabled="false">http://localhost:8080/hazelcast-mancenter</management-center>
-    <properties>
-        <property name="hazelcast.discovery.enabled">true</property>
-        <property name="hazelcast.logging.type">slf4j</property>
-    </properties>
+           http://www.hazelcast.com/schema/config/hazelcast-config-4.0.xsd">
+    
+    <cluster-name>dev</cluster-name>
     <network>
         <port auto-increment="true" port-count="100">5701</port>
         <outbound-ports>
@@ -58,12 +51,26 @@
                 <multicast-port>54327</multicast-port>
             </multicast>
             <aws enabled="false"/>
-            <tcp-ip enabled="false" />
+            <tcp-ip enabled="false">
+                <interface>*.*.*.*</interface>
+                <member-list>
+                    <member>10.255.1.0-127</member>
+                </member-list>
+            </tcp-ip>
             <gcp enabled="false"/>
             <azure enabled="false"/>
             <kubernetes enabled="false"/>
+            <eureka enabled="true">
+        		<self-registration>true</self-registration>
+        		<namespace>dev</namespace>
+        		<use-classpath-eureka-client-props>false</use-classpath-eureka-client-props>
+                <use-metadata-for-host-and-port>true</use-metadata-for-host-and-port>
+        		<name>dev</name> 
+<!--                 <serviceUrl.default>http://jws-discovery:8761/eureka</serviceUrl.default> -->
+      		</eureka>
+            
             <discovery-strategies>
-                <discovery-strategy class="com.hazelcast.eureka.one.EurekaOneDiscoveryStrategy" enabled="true">
+                <discovery-strategy class="com.hazelcast.eureka.one.EurekaOneDiscoveryStrategy" enabled="false">
                     <properties>
                         <property name="self-registration">true</property>
                         <property name="namespace">hazelcast</property>
@@ -74,10 +81,53 @@
                         <property name="serviceUrl.default">http://jws-discovery:8761/eureka</property>
                     </properties>
                 </discovery-strategy>
-            </discovery-strategies>
-           </join>
+                <discovery-strategy enabled="false"
+                    class="org.bitsofinfo.hazelcast.discovery.docker.swarm.DockerSwarmDiscoveryStrategy">
+
+                    <properties>
+                        <!-- Comma delimited list of Docker network names to discover matching services on -->
+                        <property name="docker-network-names">demo_default</property>
+
+                        <!-- Comma delimited list of relevant Docker service names
+                        to find tasks/containers on the above networks -->
+                        <property name="docker-service-names">demo_jws-db</property>
+
+                        <!-- Comma delimited list of relevant Docker service label=values
+                        to find tasks/containers on the above networks -->
+                        <property name="docker-service-labels">dockerServiceLabels</property>
+
+                        <!-- 1.0-RC5+ ONLY: Swarm Manager URI (overrides DOCKER_HOST)-->
+                        <property name="swarm-mgr-uri">http://192.168.1.110:2377</property>
+
+                        <!-- 1.0-RC5+ ONLY: If Swarm Mgr URI is SSL, to enable skip-verify for it -->
+                        <property name="skip-verify-ssl">skipVerifySsl</property>
+                  
+                        <!-- 1.0-RC13+ ONLY! 
+                       If enabled logged w/ severity FINE.
+                       Use with caution. If your target swarm cluster contains many services this call 
+                       may result in logging a considerable amount of un-related docker service names.
+                        -->
+                        <property name="log-all-service-names-on-failed-discovery">logAllServiceNamesOnFailedDiscovery</property>
+
+                        <!-- 1.0-RC14+ ONLY: If enabled, perform strict "equals" name check of services returned from Docker -->
+                        <property name="strict-docker-service-name-comparison">strictDockerServiceNameComparison</property>
+
+                        <!-- The raw port that hazelcast is listening on
+
+                       IMPORTANT: this is NOT a docker "published" port, nor is it necessarily
+                       a EXPOSEd port... it is simply the hazelcast port that the service
+                       is configured with, this must be the same for all matched containers
+                       in order to work, and just using the default of 5701 is the simplist
+                       way to go.
+                        -->
+                  <property name="hazelcast-peer-port">5701</property>
+             </properties>
+
+           </discovery-strategy>
+           </discovery-strategies>
+        </join>
         <interfaces enabled="true">
-            <interface>10.0.*.*</interface>
+            <interface>10.0.1-255.*</interface>
         </interfaces>
         <ssl enabled="false"/>
         <socket-interceptor enabled="false"/>
@@ -180,35 +230,8 @@
             Any integer between 0 and Integer.MAX_VALUE. 0 means infinite. Default is 0.
         -->
         <max-idle-seconds>0</max-idle-seconds>
-        <!--
-            Valid values are:
-            NONE (no eviction),
-            LRU (Least Recently Used),
-            LFU (Least Frequently Used).
-            NONE is the default.
-        -->
-        <eviction-policy>NONE</eviction-policy>
-        <!--
-            Maximum size of the map. When max size is reached,
-            map is evicted based on the policy defined.
-            Any integer between 0 and Integer.MAX_VALUE. 0 means
-            Integer.MAX_VALUE. Default is 0.
-        -->
-        <max-size policy="PER_NODE">0</max-size>
-        <!--
-            `eviction-percentage` property is deprecated and will be ignored when it is set.
 
-            As of version 3.7, eviction mechanism changed.
-            It uses a probabilistic algorithm based on sampling. Please see documentation for further details
-        -->
-        <eviction-percentage>25</eviction-percentage>
-        <!--
-            `min-eviction-check-millis` property is deprecated  and will be ignored when it is set.
-
-            As of version 3.7, eviction mechanism changed.
-            It uses a probabilistic algorithm based on sampling. Please see documentation for further details
-        -->
-        <min-eviction-check-millis>100</min-eviction-check-millis>
+        <eviction eviction-policy="NONE" max-size-policy="PER_NODE" size="0"/>
         <!--
             While recovering from split-brain (network partitioning),
             map entries in the small cluster will merge into the bigger cluster
@@ -219,10 +242,10 @@
             the policy set here. Default policy is PutIfAbsentMapMergePolicy
 
             There are built-in merge policies such as
-            com.hazelcast.map.merge.PassThroughMergePolicy; entry will be overwritten if merging entry exists for the key.
-            com.hazelcast.map.merge.PutIfAbsentMapMergePolicy ; entry will be added if the merging entry doesn't exist in the cluster.
-            com.hazelcast.map.merge.HigherHitsMapMergePolicy ; entry with the higher hits wins.
-            com.hazelcast.map.merge.LatestUpdateMapMergePolicy ; entry with the latest update wins.
+            com.hazelcast.spi.merge.PassThroughMergePolicy; entry will be overwritten if merging entry exists for the key.
+            com.hazelcast.spi.merge.PutIfAbsentMergePolicy ; entry will be added if the merging entry doesn't exist in the cluster.
+            com.hazelcast.spi.merge.HigherHitsMergePolicy ; entry with the higher hits wins.
+            com.hazelcast.spi.merge.LatestUpdateMergePolicy ; entry with the latest update wins.
         -->
         <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
 
@@ -237,22 +260,7 @@
 
     </map>
 
-    <!--
-           Configuration for an event journal. The event journal keeps events related
-           to a specific partition and data structure. For instance, it could keep
-           map add, update, remove, merge events along with the key, old value, new value and so on.
-        -->
-    <event-journal enabled="false">
-        <mapName>mapName</mapName>
-        <capacity>10000</capacity>
-        <time-to-live-seconds>0</time-to-live-seconds>
-    </event-journal>
 
-    <event-journal enabled="false">
-        <cacheName>cacheName</cacheName>
-        <capacity>10000</capacity>
-        <time-to-live-seconds>0</time-to-live-seconds>
-    </event-journal>
 
     <!--
        Configuration for a merkle tree.
@@ -260,10 +268,6 @@
        difference in the contents of large data structures. The precision of
        such a comparison mechanism is defined by the depth of the merkle tree.
     -->
-    <merkle-tree enabled="false">
-        <mapName>mapName</mapName>
-        <depth>10</depth>
-    </merkle-tree>
 
     <multimap name="default">
         <backup-count>1</backup-count>
@@ -288,55 +292,6 @@
         <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
     </set>
 
-    <jobtracker name="default">
-        <max-thread-size>0</max-thread-size>
-        <!-- Queue size 0 means number of partitions * 2 -->
-        <queue-size>0</queue-size>
-        <retry-count>0</retry-count>
-        <chunk-size>1000</chunk-size>
-        <communicate-stats>true</communicate-stats>
-        <topology-changed-strategy>CANCEL_RUNNING_OPERATION</topology-changed-strategy>
-    </jobtracker>
-
-    <semaphore name="default">
-        <initial-permits>0</initial-permits>
-        <backup-count>1</backup-count>
-        <async-backup-count>0</async-backup-count>
-    </semaphore>
-
-    <reliable-topic name="default">
-        <read-batch-size>10</read-batch-size>
-        <topic-overload-policy>BLOCK</topic-overload-policy>
-        <statistics-enabled>true</statistics-enabled>
-    </reliable-topic>
-
-    <ringbuffer name="default">
-        <capacity>10000</capacity>
-        <backup-count>1</backup-count>
-        <async-backup-count>0</async-backup-count>
-        <time-to-live-seconds>0</time-to-live-seconds>
-        <in-memory-format>BINARY</in-memory-format>
-        <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
-    </ringbuffer>
-
-    <flake-id-generator name="default">
-        <prefetch-count>100</prefetch-count>
-        <prefetch-validity-millis>600000</prefetch-validity-millis>
-        <id-offset>0</id-offset>
-        <node-id-offset>0</node-id-offset>
-        <statistics-enabled>true</statistics-enabled>
-    </flake-id-generator>
-
-    <atomic-long name="default">
-        <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
-    </atomic-long>
-
-    <atomic-reference name="default">
-        <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
-    </atomic-reference>
-
-    <count-down-latch name="default"/>
-
     <serialization>
         <portable-version>0</portable-version>
         <serializers>
@@ -347,8 +302,6 @@
             </global-serializer>
         </serializers>
     </serialization>
-
-    <services enable-defaults="true"/>
 
     <lite-member enabled="false"/>
 
@@ -392,5 +345,17 @@
             <append-request-backoff-timeout-in-millis>100</append-request-backoff-timeout-in-millis>
         </raft-algorithm>
     </cp-subsystem>
+
+    <metrics enabled="true">
+        <management-center enabled="true">
+            <retention-seconds>5</retention-seconds>
+        </management-center>
+        <jmx enabled="true"/>
+        <collection-frequency-seconds>5</collection-frequency-seconds>
+    </metrics>
+
+    <properties>
+        <property name="hazelcast.logging.type">slf4j</property>
+    </properties>
 
 </hazelcast>

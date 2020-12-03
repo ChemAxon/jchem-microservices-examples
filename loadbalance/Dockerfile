@@ -17,4 +17,5 @@ FROM openjdk:8u181-jre-stretch
 COPY ./jws/ /opt/chemaxon/jws/
 COPY ./application.properties /opt/chemaxon/jws/jws-config/common-config/application.properties
 COPY ./hazelcastDockerEureka.xml /opt/chemaxon/jws/jws-db/config/hazelcastDocker.xml
+RUN mkdir -p /opt/chemaxon/jws/jws-db/data/export
 
