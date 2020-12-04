@@ -20,7 +20,13 @@ These steps must be executed on every node of the swarm or alternatively swarm r
       <interface>10.0.*.*</interface>
     </interfaces>
 ```
-On the other hand this mask should prevent hazelcast from finding ip addresses outside docker swarm. IP addresses found by hazelcast and signed on discovery service can be monitored in [eureka](http://localhost:8761/eureka/apps).
+On the other hand this mask should prevent hazelcast from finding ip addresses outside docker swarm. The jws docker container has 3 ip addresses, this mask defines which one will be chosen. Choose the one that enables hazelcasts to find each others. IP addresses found by hazelcast and signed on discovery service can be monitored in [eureka](http://localhost:8761/eureka/apps). You can also check ip addresses of the container by logging into them, and executing ifconfig: 
+```
+docker exec -it <container-id> bash
+apt-get update;apt-get install net-tools
+ifconfig
+```
+You can check if hazelcast instances have found each other by checking the log file in the jws-db container, it's located in /opt/chemaxon/jws/logs.
 
 
 # Execute
