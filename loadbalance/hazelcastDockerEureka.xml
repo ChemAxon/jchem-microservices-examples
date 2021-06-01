@@ -64,9 +64,9 @@
         		<self-registration>true</self-registration>
         		<namespace>dev</namespace>
         		<use-classpath-eureka-client-props>false</use-classpath-eureka-client-props>
-                <use-metadata-for-host-and-port>true</use-metadata-for-host-and-port>
+                <use-metadata-for-host-and-port>false</use-metadata-for-host-and-port>
         		<name>dev</name> 
-<!--                 <serviceUrl.default>http://jws-discovery:8761/eureka</serviceUrl.default> -->
+                <serviceUrl.default>http://jws-discovery:8761/eureka</serviceUrl.default> 
       		</eureka>
             
             <discovery-strategies>
