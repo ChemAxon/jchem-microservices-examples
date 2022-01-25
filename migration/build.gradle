@@ -24,6 +24,7 @@ repositories {
             password = chemaxonRepositoryPassword
         }
     }
+    mavenCentral()
 }
 
 dependencies {
