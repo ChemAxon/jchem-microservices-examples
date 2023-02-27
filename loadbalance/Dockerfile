@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM openjdk:11.0.12-jdk-bullseye
+FROM eclipse-temurin:17-jdk-focal
 
 COPY ./jws/ /opt/chemaxon/jws/
 COPY ./application.properties /opt/chemaxon/jws/jws-config/common-config/application.properties
