@@ -1,12 +1,12 @@
-# About
+# Migration from JChem Webservices to JChem Microservices
 
 This project contains a tool to help you transfer your data _from JChem WebServices to JChem Microservices_.
 
-# Prerequisites
+## Prerequisites
 
 If you would like to run this project please set ```chemaxonRepositoryUser``` and ```chemaxonRepositoryPassword``` in ```gradle.properties```.
 
-# How To Transfer Data
+## How To Transfer Data
 
 First you have to export your existing data from JChem WebServices to one (or more) molecule file(s).
 

@@ -1,4 +1,4 @@
-# How to write custom Structure Checker - Structure Fixer for JChem Microservices
+# How to write custom Structure Checker / Structure Fixer for JChem Microservices
 
 This repository contains an example project, on how to create your own Structure Checkers and Structure Fixers. In the end, you can build the application and use the jar in JChem Microservices.
 

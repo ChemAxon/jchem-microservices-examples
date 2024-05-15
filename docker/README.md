@@ -1,4 +1,7 @@
-# example docker for JWS
+# How to create Docker images of JChem Microservices manually
+
+> This example is about creating docker images of JChem Microservices _manually_.
+If you want to use the official images, see the [official-docker-images](../official-docker-images) example.
 
 ## Prerequisites
 
@@ -23,7 +26,7 @@ If you want to change any JVM arguments you can pass them to the executables wit
 `-J-Xmx4g` would set the maximum memory of the JVM to __4 GB__. You should write these extra settings to the
 end of the `command` in the `docker-compose.yml` file.
 
-## Architecture of the services:
+## Architecture of the services
 
 The services share a configuration server which is a way to centralize all the settings for the servers. This services
 tells every other services the configurations and where to find the service-registry. The service-registry is an

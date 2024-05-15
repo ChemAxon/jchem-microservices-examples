@@ -1,4 +1,4 @@
-# jms-external-beans-example
+# JChem Microservices external beans example
 
 Example for using external beans with JChem Microservices
 

@@ -1,11 +1,13 @@
+# How to set up high-availability with JChem Microservices DB
 
-## Install:
+
+## Installation
 
 * Install docker-compose on every machine of the swarm.
 * Init docker swarm machine on the manager node and add the desired nodes to the swarm.
 
 
-## Setups before first run:
+## Setup before first run
 
 These steps must be executed on every node of the swarm or alternatively swarm registry can be used.
 
@@ -29,7 +31,7 @@ ifconfig
 You can check if hazelcast instances have found each other by checking the log file in the jws-db container, it's located in /opt/chemaxon/jws/logs.
 
 
-# Execute
+# Execution
 
 Build the image, this must be executed on every node in the directory of `jws-load-balanced-example`: 
 
@@ -49,7 +51,7 @@ This command will create a new service stack with name `demo` based on the docke
 * `docker stack ps <stack-name> --no-trunc` list all services in stack (identified by <stack-name>)
 * `docker stack rm <stack-name>` stops and removes all services in stack
 
-# Near cache config
+## Near cache config
 
 Setting hazelcast near cache option has the effect that read operations are faster due to faster hazelcast caching and caching the java objects instead of the serialized format. 
 
@@ -69,6 +71,6 @@ Near cache load-balanced example needs the following modifications in the above 
     `docker stack deploy --compose-file docker-composeNearCache.yml demo`
 
 
-# Good to know
+## Good to know
 
 Table names longer than 18 character cannot be created because internal tables are created based on this name and their name exceeds the 63 character limit in this case.
