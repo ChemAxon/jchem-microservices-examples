@@ -13,17 +13,18 @@ to make your life easier, this version only solves the purpose to get you starte
 
 ## How to run
 
-execute `docker-compose up`
+1. Check the JMS version in the `.env` file, and change it to the one you need
+2. Execute `docker-compose up`
 
 ## What is happening in this example?
 
 The docker-compose file has a description of the JChem Microservices system
-whit a central license server. The license server is a module we build during 
+whit a central license server. The license server is a module we build during
 __UP__ command, and it is based on [Nginx](https://hub.docker.com/_/nginx) image.
 
 ## How to access the system?
 
-In the end the port 8080 will be open and forwared towards the outer world. 
+In the end the port 8080 will be open and forwarded towards the outer world. 
 
 ## What could be on volumes?
 
