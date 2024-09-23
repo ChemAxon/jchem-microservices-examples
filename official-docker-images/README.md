@@ -36,3 +36,12 @@ These folders in a production environment could be on volumes depending on your
 needs, but this is only a kick-starter example, it does not aim to teach docker 
 basics. If you want to restructure the conatiners, feel free. If you would like 
 to save more persistent data, than it is up to you.
+
+## How to start with HTTPS
+
+The files in the [https](./https) folder are a variant of this example where `jms-gateway` is configured with HTTPS access.
+Necessary configurations in the [https/.env](https/.env) file should be updated before execution:
+* KEY_STORE_FILE - Key store file name. It should be placed next to the `https/docker-compose.yml` file
+* KEY_STORE_PASSWORD - Password of keystore
+* KEY_STORE_TYPE - Key store type (e.g. PKCS12)
+
