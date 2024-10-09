@@ -26,6 +26,11 @@ __UP__ command, and it is based on [Nginx](https://hub.docker.com/_/nginx) image
 
 In the end the port 8080 will be open and forwarded towards the outer world. 
 
+## How to update the license file?
+
+If you already have a license server then the related docker image (`cxn/jms/nginx-license-server:latest`) should be deleted first.
+New license file should be placed in the folder and docker compose can be started - it re-builds the license server automatically.
+
 ## What could be on volumes?
 
 * `/app/jws/jws-db/data` folder contains all the data you upload to JMS DB.
