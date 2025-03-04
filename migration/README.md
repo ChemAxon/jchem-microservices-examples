@@ -4,7 +4,7 @@ This project contains a tool to help you transfer your data _from JChem WebServi
 
 ## Prerequisites
 
-If you would like to run this project please set ```cxnHubUser``` and ```cxnHubApiKey``` in ```gradle.properties```.
+If you would like to run this project please set ```chemaxonRepositoryUser``` and ```chemaxonRepositoryPassword``` in ```gradle.properties```.
 
 ## How To Transfer Data
 

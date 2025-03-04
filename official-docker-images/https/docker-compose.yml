@@ -1,4 +1,4 @@
-# Copyright 2020-2024 Chemaxon Ltd.
+# Copyright 2020-2025 Chemaxon Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-version: '3'
 services:
   license-server:
     image: cxn/jms/nginx-license-server
@@ -20,7 +19,7 @@ services:
       context: ./
       dockerfile: nginx-license-server.dockerfile
   jms-config:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-config:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-config:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -28,7 +27,7 @@ services:
     depends_on:
       - license-server
   jms-discovery:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-discovery:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-discovery:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -36,7 +35,7 @@ services:
     depends_on:
       - jms-config
   jms-calculations:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-calculations:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-calculations:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -44,7 +43,7 @@ services:
     depends_on:
       - jms-discovery
   jms-db:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-db:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-db:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -52,7 +51,7 @@ services:
     depends_on:
       - jms-discovery
   jms-io:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-io:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-io:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -60,7 +59,7 @@ services:
     depends_on:
       - jms-discovery
   jms-markush:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-markush:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-markush:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -68,7 +67,7 @@ services:
     depends_on:
       - jms-discovery
   jms-reactor:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-reactor:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-reactor:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -76,7 +75,7 @@ services:
     depends_on:
       - jms-discovery
   jms-structure:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-structure:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-structure:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -84,7 +83,7 @@ services:
     depends_on:
       - jms-discovery
   jms-structurechecker:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-structurechecker:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-structurechecker:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
@@ -92,7 +91,7 @@ services:
     depends_on:
       - jms-discovery
   jms-gateway:
-    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-gateway:${JMS_VERSION}
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-gateway:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"

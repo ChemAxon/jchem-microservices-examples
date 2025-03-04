@@ -19,14 +19,14 @@ plugins {
     id 'java-library'
 }
 
-checkIfSetupIsAcceptable()
+checkProjectProperties()
 
 repositories {
     maven {
-        url = 'https://hub.chemaxon.com/artifactory/libs-release'
+        url = 'https://chemaxon.jfrog.io/artifactory/libs-release'
         credentials {
-            username = cxnHubUser
-            password = cxnHubApiKey
+            username = chemaxonRepositoryUser
+            password = chemaxonRepositoryPassword
         }
     }
 }
@@ -50,17 +50,12 @@ test {
     useJUnitPlatform()
 }
 
-private void checkIfSetupIsAcceptable() {
-    def missing = []
-    appendMissing('cxnHubUser', missing)
-    appendMissing('cxnHubApiKey', missing)
+private void checkProjectProperties() {
+    def missing = List.of('chemaxonRepositoryUser', 'chemaxonRepositoryPassword').findAll { !project.hasProperty(it) || !project[it] }
     if (!missing.isEmpty()) {
-        throw new GradleException("The following settings are missing: ${missing}, please follow the guide here: https://chemaxon.com/products/jchem-engines/download#gradle-panel to find out your password and username, and add them to the gradle.properties file")
-    }
-}
-
-private void appendMissing(String key, List<String> missingList) {
-    if (!project.hasProperty(key) || !project[key]) {
-        missingList << key
+        throw new GradleException("""The following settings are missing: ${missing}
+Please follow the guide here: https://docs.chemaxon.com/display/docs/general_public-repository.md
+and add your email address and identity token to the gradle.properties file.
+""")
     }
 }
