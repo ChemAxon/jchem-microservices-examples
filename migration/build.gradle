@@ -38,9 +38,9 @@ compileJava {
 }
 
 dependencies {
-    implementation 'com.chemaxon:io-all:24.4.2'
+    implementation "com.chemaxon:io-all:${chemaxonReleaseVersion}"
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
 tasks.register('transferData', JavaExec) {

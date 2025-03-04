@@ -37,11 +37,12 @@ compileJava {
 }
 
 dependencies {
-    implementation "com.chemaxon:structurechecker:${cxnReleaseVersion}"
-    implementation "com.chemaxon:io-all:${cxnReleaseVersion}"
+    implementation "com.chemaxon:structurechecker:${chemaxonReleaseVersion}"
+    implementation "com.chemaxon:io-all:${chemaxonReleaseVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
