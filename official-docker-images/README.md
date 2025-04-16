@@ -1,15 +1,22 @@
 # How to use the official JChem Microservices Docker images
 
-This is an example of how to use the official docker images.
-For this example to use you will need licenses for the JChem Microservices
-Modules (downloaded to this folder as `license.cxl`) and __docker__ and 
-__docker-compose__ installed on your system.
-
 > **Disclaimer**
 >
 > This is just a quick example. If you use this example to build your system,
 then be prepared to do your own security settings. Feel free to change any parts
 to make your life easier, this version only solves the purpose to get you started.
+
+## Prerequisites
+
+In order to download the official Docker images of JChem Microservices, you need to install [Docker](https://www.docker.com/) on your system and configure it to access the [Chemaxon Public Repository](https://docs.chemaxon.com/display/docs/general_public-repository.md). After acquiring your credentials, you can simply call
+
+```
+docker login chemaxon.jfrog.io
+```
+
+to set up Docker to access the repository.
+
+For this example, you will also need licenses for the JChem Microservices modules. Put your `license.cxl` file to this folder, next to the docker compose file.
 
 ## How to run
 
