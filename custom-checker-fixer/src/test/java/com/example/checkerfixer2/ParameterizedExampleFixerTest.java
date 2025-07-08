@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.chemaxon.exampe.jms.ccf.parameterized;
+package com.example.checkerfixer2;
 
 import java.util.List;
 
@@ -28,15 +28,15 @@ import chemaxon.struc.PeriodicSystem;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MyCustomFixerWithParameterTest {
+class ParameterizedExampleFixerTest {
 
     @Test
     @DisplayName("Fixer replaces heavy atoms with specified atom")
     void testFix() throws Exception {
         var mol = MolImporter.importMol("CNCl");
 
-        var checker = new MyCustomCheckerWithParameter();
-        var fixer = new MyCustomFixerWithParameter();
+        var checker = new ParameterizedExampleChecker();
+        var fixer = new ParameterizedExampleFixer();
         fixer.fix(checker.check(mol));
 
         assertEquals(

@@ -15,10 +15,9 @@
  *
  */
 
-package com.chemaxon.exampe.jms.ccf.parameterized;
+package com.example.checkerfixer2;
 
 import java.util.Map;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -28,35 +27,46 @@ import chemaxon.struc.Molecule;
 import chemaxon.struc.PeriodicSystem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-class MyCustomCheckerWithParameterTest {
+class ParameterizedExampleCheckerTest {
 
     private static final String MOLECULE = "c1ccccc1CC(N)C";
 
     @Test
     @DisplayName("Without atoms heavier than oxygen our checker finds no atoms")
     void noAtomsFound() throws Exception {
-        Molecule m = MolImporter.importMol(MOLECULE);
-        StructureCheckerResult result = new MyCustomCheckerWithParameter().check(m);
-        assertTrue(result.getAtoms().isEmpty());
+        var checker = new ParameterizedExampleChecker();
+        Molecule molecule = MolImporter.importMol(MOLECULE);
+
+        StructureCheckerResult result = new ParameterizedExampleChecker().check(molecule);
+
+        assertNull(result);
     }
 
     @Test
     @DisplayName("Passing the atomic number in the appropriate constructor changes the checker")
     void useConstructor() throws Exception {
-        Molecule m = MolImporter.importMol(MOLECULE);
-        StructureCheckerResult result = new MyCustomCheckerWithParameter(Map.of("atomicNumber", "6")).check(m);
+        var checker = new ParameterizedExampleChecker(Map.of("atomicNumber", "6"));
+        Molecule molecule = MolImporter.importMol(MOLECULE);
+
+        StructureCheckerResult result = checker.check(molecule);
+
+        assertNotNull(result);
         assertEquals(1, result.getAtoms().size());
     }
 
     @Test
     @DisplayName("Passing the atomic number in the setter changes the checker")
     void useSetter() throws Exception {
-        Molecule m = MolImporter.importMol(MOLECULE);
-        var checker = new MyCustomCheckerWithParameter();
+        var checker = new ParameterizedExampleChecker();
         checker.setAtomicNumber(PeriodicSystem.C);
-        StructureCheckerResult result = checker.check(m);
+        Molecule molecule = MolImporter.importMol(MOLECULE);
+
+        StructureCheckerResult result = checker.check(molecule);
+
+        assertNotNull(result);
         assertEquals(1, result.getAtoms().size());
     }
 

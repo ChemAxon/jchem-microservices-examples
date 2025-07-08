@@ -15,13 +15,16 @@
  *
  */
 
-package com.chemaxon.exampe.jms.ccf;
+package com.example.checkerfixer1;
 
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.fixers.AbstractStructureFixer;
 import chemaxon.struc.PeriodicSystem;
 
-public class MyCustomFixer extends AbstractStructureFixer {
+/**
+ * Example structure fixer without parameters. The related checker is {@link ExampleChecker}.
+ */
+public class ExampleFixer extends AbstractStructureFixer {
 
     @Override
     public boolean fix(StructureCheckerResult checkerResult) {

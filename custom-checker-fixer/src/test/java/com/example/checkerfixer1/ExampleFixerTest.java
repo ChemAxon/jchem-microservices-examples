@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.chemaxon.exampe.jms.ccf;
+package com.example.checkerfixer1;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,22 +26,22 @@ import chemaxon.struc.PeriodicSystem;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MyCustomFixerTest {
+class ExampleFixerTest {
 
     @Test
     @DisplayName("Fixer replaces heavy atoms with Oxygen")
     void testFix() throws Exception {
-        Molecule mol = MolImporter.importMol("CNCl");
+        var checker = new ExampleChecker();
+        var fixer = new ExampleFixer();
+        Molecule molecule = MolImporter.importMol("CNCl");
 
-        var checker = new MyCustomChecker();
-        var fixer = new MyCustomFixer();
-        fixer.fix(checker.check(mol));
+        fixer.fix(checker.check(molecule));
 
         assertAll(
-                () -> assertEquals(3, mol.atoms().size()),
-                () -> assertEquals(PeriodicSystem.C, mol.getAtom(0).getAtno()),
-                () -> assertEquals(PeriodicSystem.N, mol.getAtom(1).getAtno()),
-                () -> assertEquals(PeriodicSystem.O, mol.getAtom(2).getAtno())
+                () -> assertEquals(3, molecule.atoms().size()),
+                () -> assertEquals(PeriodicSystem.C, molecule.getAtom(0).getAtno()),
+                () -> assertEquals(PeriodicSystem.N, molecule.getAtom(1).getAtno()),
+                () -> assertEquals(PeriodicSystem.O, molecule.getAtom(2).getAtno())
         );
     }
 

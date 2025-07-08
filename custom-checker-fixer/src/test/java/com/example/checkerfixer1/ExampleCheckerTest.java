@@ -15,31 +15,41 @@
  *
  */
 
-package com.chemaxon.exampe.jms.ccf;
+package com.example.checkerfixer1;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.formats.MolImporter;
+import chemaxon.struc.Molecule;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
- class MyCustomCheckerTest {
+class ExampleCheckerTest {
 
     @Test
     @DisplayName("Without atoms heavier than oxygen our checker finds no atoms")
      void noAtomsFound() throws Exception {
-        var m = MolImporter.importMol("c1ccccc1CC(N)C");
-        var result = new MyCustomChecker().check(m);
-        assertTrue(result.getAtoms().isEmpty());
+        var checker = new ExampleChecker();
+        Molecule molecule = MolImporter.importMol("c1ccccc1CC(N)C");
+
+        StructureCheckerResult result = checker.check(molecule);
+
+        assertNull(result);
     }
 
     @Test
     @DisplayName("All atoms that are heavier than oxygen is found")
      void allFound() throws Exception {
-        var m = MolImporter.importMol("Brc1ccccc1Cl");
-        var result = new MyCustomChecker().check(m);
+        var checker = new ExampleChecker();
+        Molecule molecule = MolImporter.importMol("Brc1ccccc1Cl");
+
+        StructureCheckerResult result = checker.check(molecule);
+
+        assertNotNull(result);
         assertEquals(2, result.getAtoms().size());
     }
 

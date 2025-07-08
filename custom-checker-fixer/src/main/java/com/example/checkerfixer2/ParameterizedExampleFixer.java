@@ -15,18 +15,21 @@
  *
  */
 
-package com.chemaxon.exampe.jms.ccf.parameterized;
+package com.example.checkerfixer2;
 
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.fixers.AbstractStructureFixer;
 
-public class MyCustomFixerWithParameter extends AbstractStructureFixer {
+/**
+ * Example structure fixer with parameters. The related checker is {@link ParameterizedExampleChecker}.
+ */
+public class ParameterizedExampleFixer extends AbstractStructureFixer {
 
     @Override
     public boolean fix(StructureCheckerResult checkerResult) {
         // Fixers cannot have parameters on their own, but they always receive the result object that was returned by
         // the connected checker, so they can use that to pass information.
-        var atno = ((MyStructureCheckerResult) checkerResult).atno;
+        int atno = ((ExampleCheckerResult) checkerResult).atno;
         checkerResult.getAtoms().forEach(atom -> atom.setAtno(atno));
         return true;
     }

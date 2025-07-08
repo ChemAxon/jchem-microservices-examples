@@ -23,8 +23,8 @@ Send a request with content:
 {
   "checkerSettings": [
     {
-      "checkerClass": "com.chemaxon.exampe.jms.ccf.MyCustomChecker",
-      "displayName": "ExampleChecker"
+      "checkerClass": "com.example.checkerfixer1.ExampleChecker",
+      "displayName": "custom checker"
     }
   ],
   "filter": {
@@ -59,13 +59,13 @@ Example input:
   "settings": [
     {
       "checkerSettings": {
-        "checkerClass": "com.chemaxon.exampe.jms.ccf.MyCustomChecker",
-        "displayName": "ExampleChecker"
+        "checkerClass": "com.example.checkerfixer1.ExampleChecker",
+        "displayName": "custom checker"
       },
       "fixerSettings": {
-        "displayName": "ExampleFixer",
+        "displayName": "custom fixer",
         "exportFormat": "smiles",
-        "fixerClass": "com.chemaxon.exampe.jms.ccf.MyCustomFixer"
+        "fixerClass": "com.example.checkerfixer1.ExampleFixer"
       }
     }
   ],
@@ -82,7 +82,7 @@ Chlorine atoms, but Oxygens in their places.
 
 ## How to pass parameters to your checkers
 
-See the classes in the `com.chemaxon.exampe.jms.ccf.parameterized` package.
+See the classes in the `com.example.checkerfixer2` package.
 
 To use the checker, send a request like below to `/rest-v1/checker/`.
 
@@ -90,8 +90,8 @@ To use the checker, send a request like below to `/rest-v1/checker/`.
 {
   "checkerSettings": [
     {
-      "checkerClass": "com.chemaxon.exampe.jms.ccf.parameterized.MyCustomCheckerWithParameter",
-      "displayName": "ExampleChecker",
+      "checkerClass": "com.example.checkerfixer2.ParameterizedExampleChecker",
+      "displayName": "parameterized custom checker",
       "atomicNumber": 6
     }
   ],
@@ -117,14 +117,14 @@ parameter to the checker as the fixer cannot have a parameter on its own.
   "settings": [
     {
       "checkerSettings": {
-        "checkerClass": "com.chemaxon.exampe.jms.ccf.parameterized.MyCustomCheckerWithParameter",
-        "displayName": "ExampleChecker",
+        "checkerClass": "com.example.checkerfixer2.ParameterizedExampleChecker",
+        "displayName": "parameterized custom checker",
         "atomicNumber": 6
       },
       "fixerSettings": {
-        "displayName": "ExampleFixer",
+        "displayName": "parameterized custom fixer",
         "exportFormat": "smiles",
-        "fixerClass": "com.chemaxon.exampe.jms.ccf.parameterized.MyCustomFixerWithParameter"
+        "fixerClass": "com.example.checkerfixer2.ParameterizedExampleFixer"
       }
     }
   ],

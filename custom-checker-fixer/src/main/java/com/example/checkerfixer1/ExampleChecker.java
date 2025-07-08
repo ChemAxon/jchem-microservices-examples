@@ -15,9 +15,8 @@
  *
  */
 
-package com.chemaxon.exampe.jms.ccf;
+package com.example.checkerfixer1;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import chemaxon.checkers.ExternalStructureChecker;
@@ -27,21 +26,36 @@ import chemaxon.struc.MolAtom;
 import chemaxon.struc.Molecule;
 import chemaxon.struc.PeriodicSystem;
 
-import static java.util.stream.Collectors.toList;
+/**
+ * Simple example structure checker without parameters. The related fixer is {@link ExampleFixer}.
+ * <p>
+ * For a parameterized variant, see {@link com.example.checkerfixer2.ParameterizedExampleChecker}.
+ */
+public class ExampleChecker extends ExternalStructureChecker {
 
-public class MyCustomChecker extends ExternalStructureChecker {
-
-    public MyCustomChecker() {
-        super("MyCheckerError");
+    public ExampleChecker() {
+        super("ExampleCheckerError");
     }
 
     @Override
     protected StructureCheckerResult check1(Molecule molecule) {
         List<MolAtom> atomsWithMoreProtonThanOxygen = molecule.atoms().stream()
                 .filter(atom -> atom.getAtno() > PeriodicSystem.O)
-                .collect(toList());
-        return new DefaultExternalStructureCheckerResult(this, atomsWithMoreProtonThanOxygen, new ArrayList<>(),
-                molecule, "These atoms have more protons than Oxygen");
+                .toList();
+
+        // If there is no error, null should be returned
+        if (atomsWithMoreProtonThanOxygen.isEmpty()) {
+            return null;
+        }
+
+        // Otherwise, return the appropriate result to describe the problem
+        return new DefaultExternalStructureCheckerResult(
+                this,
+                atomsWithMoreProtonThanOxygen,
+                List.of(), // list of erroneous bonds, none in our case
+                molecule,
+                "These atoms have more protons than Oxygen"
+        );
     }
 
 }

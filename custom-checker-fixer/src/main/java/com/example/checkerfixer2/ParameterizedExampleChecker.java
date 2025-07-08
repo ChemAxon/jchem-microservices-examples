@@ -15,14 +15,12 @@
  *
  */
 
-package com.chemaxon.exampe.jms.ccf.parameterized;
+package com.example.checkerfixer2;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import chemaxon.checkers.ExternalStructureChecker;
-import chemaxon.checkers.result.DefaultExternalStructureCheckerResult;
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.struc.MolAtom;
 import chemaxon.struc.Molecule;
@@ -30,20 +28,25 @@ import chemaxon.struc.PeriodicSystem;
 
 import static java.util.stream.Collectors.toList;
 
-public class MyCustomCheckerWithParameter extends ExternalStructureChecker {
+/**
+ * Example structure checker with parameters. The related fixer is {@link ParameterizedExampleFixer}.
+ * <p>
+ * For a simple variant, see {@link com.example.checkerfixer1.ExampleChecker}.
+ */
+public class ParameterizedExampleChecker extends ExternalStructureChecker {
 
     private static final String ERROR_CODE = "MyCheckerError";
 
     private int atno = PeriodicSystem.O;
 
-    public MyCustomCheckerWithParameter() {
+    public ParameterizedExampleChecker() {
         super(ERROR_CODE);
     }
 
     // When using the XML-based endpoint (/rest-v1/checker-fixer/xml-based), custom parameters are passed to this
     // constructor. This constructor can be omitted if the checker has no parameters or the XML-based endpoint is not
     // used.
-    public MyCustomCheckerWithParameter(Map<String, String> properties) {
+    public ParameterizedExampleChecker(Map<String, String> properties) {
         super(ERROR_CODE);
         atno = Integer.parseInt(properties.get("atomicNumber"));
     }
@@ -59,8 +62,22 @@ public class MyCustomCheckerWithParameter extends ExternalStructureChecker {
         List<MolAtom> atomsWithMoreProtons = molecule.atoms().stream()
                 .filter(atom -> atom.getAtno() > atno)
                 .collect(toList());
-        return new MyStructureCheckerResult(this, atomsWithMoreProtons, new ArrayList<>(),
-                molecule, "These atoms have more than " + atno + " protons", atno);
+
+        // If there is no error, null should be returned
+        if (atomsWithMoreProtons.isEmpty()) {
+            return null;
+        }
+
+        // Otherwise, return the appropriate result to describe the problem.
+        // We return an instance of a custom class here to pass parameters to the fixer.
+        return new ExampleCheckerResult(
+                this,
+                atomsWithMoreProtons,
+                List.of(), // list of erroneous bonds, none in our case
+                molecule,
+                "These atoms have more than " + atno + " protons",
+                atno
+        );
     }
 
 }
