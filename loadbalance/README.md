@@ -1,76 +1,29 @@
 # High availability with Database Search Service
 
+This is an example of how to set up JChem Microservices DB with high-availability mode.
 
-## Installation
+## Before version 25.3.0
 
-* Install docker-compose on every machine of the swarm.
-* Init docker swarm machine on the manager node and add the desired nodes to the swarm.
+High availability of Database Search Service mode is simplified in version 25.3.0. If you have an older version, please find instructions [here](https://github.com/ChemAxon/jchem-microservices-examples/blob/master/loadbalance/before-25.3.0/README.md)
 
+## Prerequisites
 
-## Setup before first run
+For this example, you will need the "JChem Microservices DB" license (downloaded to this folder as `license.cxl`) and __docker__ installed on your system.
 
-These steps must be executed on every node of the swarm or alternatively swarm registry can be used.
+Check the JChem Microservices version in the `.env` file, and change it to the one you need.
 
-* unzip a JChem Microservices tar.gz here (in the end you should have a `jws` folder with the whole application) (download one from the product download site, preferably a version at least 19.19.)
-* copy a valid JChem Microservices license to `jws/license/license.cxl`
-* download [Postgres JDBC driver](http://central.maven.org/maven2/org/postgresql/postgresql/42.2.5/postgresql-42.2.5.jar) and copy it to `jws/jws-db/jdbc-drivers/` folder
-* ensure a running docker swarm and run the following docker commands on the manager node.
-* ensure a running postgresql server and set its connection properties in `application.properties` file of the `loadbalance` directory. Both the `com.chemaxon.zetor.settings.crdb` and the `com.chemaxon.zetor.additional.crdb` sections need to be set. 
-* Set the interface mask of the nodes running in the docker swarm in file `hazelcastDockerEureka.xml` in section 
-```
-    <interfaces enabled="true">
-      <interface>10.0.*.*</interface>
-    </interfaces>
-```
-On the other hand this mask should prevent Hazelcast from finding IP addresses outside docker swarm. The jws docker container has 3 IP addresses, this mask defines which one will be chosen. Choose the one that enables Hazelcast nodes to find each others. IP addresses found by Hazelcast and signed on discovery service can be monitored in [eureka](http://localhost:8761/eureka/apps). You can also check IP addresses of the container by logging into them, and executing ifconfig: 
-```
-docker exec -it <container-id> bash
-apt-get update;apt-get install net-tools
-ifconfig
-```
-You can check if Hazelcast instances have found each other by checking the log file in the jws-db container, it's located in /opt/chemaxon/jws/logs.
+## Execution
 
+`docker-compose up`
 
-# Execution
+## What is happening in this example?
 
-Build the image, this must be executed on every node in the directory of `loadbalance`: 
+The docker-compose file has a description of the JChem Microservices system
+with a central license server. The license server is a module we build during
+__UP__ command, and it is based on [Nginx](https://hub.docker.com/_/nginx) image.
 
-    docker-compose build
+It also starts two instances of Database Search Service which connect to a common PostgreSQL database.
 
-Now the image cxn/jws should be built.
+## How to access the system?
 
-Deploy the docker compose file on the master node: 
-
-    docker stack deploy --compose-file docker-compose.yml demo
-
-This command will create a new service stack with name `demo` based on the docker-compose file.
-
-## Other commands
-
-* `docker stack ls` lists all stacks in swarm
-* `docker stack ps <stack-name> --no-trunc` list all services in stack (identified by <stack-name>)
-* `docker stack rm <stack-name>` stops and removes all services in stack
-
-## Near cache config
-
-Setting Hazelcast near cache option has the effect that read operations are faster due to faster Hazelcast caching and caching the java objects instead of the serialized format. 
-
-Consequences:
-
-* Synchronization between nodes is slower. 
-* This has the effect that to keep that data consistent, only one writer node is allowed, further jws-db nodes can only read the shared db.
-* Gateway has separate endpoints for reading and read-write operations:
-    * read: `jwsdbreadonly`
-    * read-write: `jwsdb`
-
-Near cache load-balanced example needs the following modifications in the above launch process:
-
-* Replace `Dockerfile` with `DockerfileNearCache` and re-build the docker images on the nodes.
-* use the relevant docker compose file: 
-
-    `docker stack deploy --compose-file docker-composeNearCache.yml demo`
-
-
-## Good to know
-
-Table names longer than 18 character cannot be created because internal tables are created based on this name and their name exceeds the 63 character limit in this case.
+In the end the port 8080 will be open and forwarded towards the outer world.

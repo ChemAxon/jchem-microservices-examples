@@ -13,47 +13,44 @@
 # limitations under the License.
 
 services:
-  jws-config:
-    build: .
-    image: cxn/jws
-    command: /opt/chemaxon/jws/jws-config/run-jws-config
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/"
-  jws-discovery:
-    build: .
-    image: cxn/jws
-    command: /opt/chemaxon/jws/jws-discovery/run-jws-discovery
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/"
-# To monitor discovery service for tesing purposes uncomment:
-#    ports:
-#      - "8761:8761"
-  jws-db:
-    build: .
-    image: cxn/jws
-    command: /opt/chemaxon/jws/jws-db/run-jws-db
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+  license-server:
+    image: cxn/jms/nginx-license-server
+    build:
+      context: ./
+      dockerfile: nginx-license-server.dockerfile
+  jms-config:
+    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-config:${JMS_VERSION}
+    environment:
+      - CHEMAXON_LICENSE_URL
+  jms-discovery:
+    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-discovery:${JMS_VERSION}
+    environment:
+      - CONFIG_SERVER_URI
+      - CHEMAXON_LICENSE_URL
+  jms-db:
+    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-db:${JMS_VERSION}
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
+      - CHEMAXON_LICENSE_URL
+      - "CHEMAXON_MICROSERVICES_DB_DATASOURCE_DIALECT=POSTGRESQL"
+      - "CHEMAXON_MICROSERVICES_DB_DATASOURCE_URL=jdbc:postgresql://postgres:5432/jmsdb"
+      - "CHEMAXON_MICROSERVICES_DB_DATASOURCE_USERNAME=chemaxon"
+      - "CHEMAXON_MICROSERVICES_DB_DATASOURCE_PASSWORD=chemaxon"
     deploy:
-        mode: replicated
-        replicas: 2
-  jws-gateway:
-    build: .
-    image: cxn/jws
-    command: /opt/chemaxon/jws/jws-gateway/run-jws-gateway
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+      mode: replicated
+      replicas: 2
+  jms-gateway:
+    image: hub.chemaxon.com/cxn-docker-release/chemaxon/jms-gateway:${JMS_VERSION}
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
+      - CHEMAXON_LICENSE_URL
     ports:
       - "8080:8080"
-    restart: unless-stopped
-  #postgres:
-    #image: postgres:11.4
-    #environment:
-      #- "POSTGRES_PASSWORD=chemaxon"
-      #- "POSTGRES_USER=chemaxon"
-      #- "POSTGRES_DB=zetor"
-      #- "PGDATA=/var/lib/postgresql/data/pgdata_zetor"
+  postgres:
+    image: postgres:16.4
+    environment:
+      - "POSTGRES_PASSWORD=chemaxon"
+      - "POSTGRES_USER=chemaxon"
+      - "POSTGRES_DB=jmsdb"

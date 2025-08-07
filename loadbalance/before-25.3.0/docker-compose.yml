@@ -1,0 +1,60 @@
+# Copyright 2019 ChemAxon Ltd.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: '3'
+services:
+  jws-config:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-config/run-jws-config
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/"
+  jws-discovery:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-discovery/run-jws-discovery
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/"
+# To monitor discovery service for tesing purposes uncomment:
+#    ports:
+#      - "8761:8761"
+  jws-db:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-db/run-jws-db
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    deploy:
+        mode: replicated
+        replicas: 2
+  jws-gateway:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-gateway/run-jws-gateway
+    environment: 
+      - "EUREKA_URI=http://jws-discovery:8761/"
+      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+  #postgres:
+    #image: postgres:11.4
+    #environment:
+      #- "POSTGRES_PASSWORD=chemaxon"
+      #- "POSTGRES_USER=chemaxon"
+      #- "POSTGRES_DB=zetor"
+      #- "PGDATA=/var/lib/postgresql/data/pgdata_zetor"

@@ -28,18 +28,8 @@ end of the `command` in the `docker-compose.yml` file.
 
 ## Architecture of the services
 
-The services share a configuration server which is a way to centralize all the settings for the servers. This services
-tells every other services the configurations and where to find the service-registry. The service-registry is an
-[eureka](https://github.com/Netflix/eureka/wiki/Eureka-at-a-glance). All services register here. We also provide you 
-gateway service which is a simple [Zuul](https://github.com/Netflix/zuul/wiki) proxy. This service can loadbalance your 
-requests and can also retry to send them if any of the services fail. And you have the following ChemAxon services:
-
-* **jws-db** a simple service to store search and retrieve chemical data
-* **jws-calculations** stateless chemical calculations
-* **jws-markush** some markush tools to handle generative structures
-* **jws-io** format conversions between chemical representations
-* **jws-structure** tools to change your chemical structures
+JChem Microservices architectural documentation is available [here](https://docs.chemaxon.com/display/docs/jchem-microservices_architecture.md).
 
 ## Scaling up the services
 
-All services (except *jws-db*) can be scaled up indefinitely. 
+All services can be scaled up indefinitely. 

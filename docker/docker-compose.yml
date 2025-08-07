@@ -17,9 +17,6 @@ services:
     build: .
     image: cxn/jws
     command: /opt/chemaxon/jws/jws-config/run-jws-config
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/"
     restart: unless-stopped
     volumes:
       - "logdata:/opt/chemaxon/jws/logs"
@@ -28,10 +25,11 @@ services:
     build: .
     image: cxn/jws
     command: /opt/chemaxon/jws/jws-discovery/run-jws-discovery
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/"
+    environment:
+      - CONFIG_SERVER_URI
     restart: unless-stopped
+    depends_on:
+      - jws-config
     volumes:
       - "logdata:/opt/chemaxon/jws/logs"
   jws-calculations:
@@ -39,9 +37,11 @@ services:
     image: cxn/jws
     command: /opt/chemaxon/jws/jws-calculations/run-jws-calculations
     environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
     restart: unless-stopped
+    depends_on:
+      - jws-discovery
     volumes:
       - "logdata:/opt/chemaxon/jws/logs"
       - "license:/opt/chemaxon/jws/license"
@@ -49,10 +49,12 @@ services:
     build: .
     image: cxn/jws
     command: /opt/chemaxon/jws/jws-db/run-jws-db
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
     restart: unless-stopped
+    depends_on:
+      - jws-discovery
     volumes:
       - "logdata:/opt/chemaxon/jws/logs"
       - "dbdata:/opt/chemaxon/jws/jws-db/data/"
@@ -61,21 +63,12 @@ services:
     build: .
     image: cxn/jws
     command: /opt/chemaxon/jws/jws-io/run-jws-io
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
     restart: unless-stopped
-    volumes:
-      - "logdata:/opt/chemaxon/jws/logs"
-      - "license:/opt/chemaxon/jws/license"
-  jws-structure:
-    build: .
-    image: cxn/jws
-    command: /opt/chemaxon/jws/jws-structure/run-jws-structure
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
-    restart: unless-stopped
+    depends_on:
+      - jws-discovery
     volumes:
       - "logdata:/opt/chemaxon/jws/logs"
       - "license:/opt/chemaxon/jws/license"
@@ -83,10 +76,64 @@ services:
     build: .
     image: cxn/jws
     command: /opt/chemaxon/jws/jws-markush/run-jws-markush
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
     restart: unless-stopped
+    depends_on:
+      - jws-discovery
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-reactor:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-reactor/run-jws-reactor
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
+    restart: unless-stopped
+    depends_on:
+      - jws-discovery
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-structure:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-structure/run-jws-structure
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
+    restart: unless-stopped
+    depends_on:
+      - jws-discovery
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-structurechecker:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-structurechecker/run-jws-structurechecker
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
+    restart: unless-stopped
+    depends_on:
+      - jws-discovery
+    volumes:
+      - "logdata:/opt/chemaxon/jws/logs"
+      - "license:/opt/chemaxon/jws/license"
+  jws-taskmanager:
+    build: .
+    image: cxn/jws
+    command: /opt/chemaxon/jws/jws-taskmanager/run-jws-taskmanager
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
+    restart: unless-stopped
+    depends_on:
+      - jws-discovery
     volumes:
       - "logdata:/opt/chemaxon/jws/logs"
       - "license:/opt/chemaxon/jws/license"
@@ -94,15 +141,17 @@ services:
     build: .
     image: cxn/jws
     command: /opt/chemaxon/jws/jws-gateway/run-jws-gateway
-    environment: 
-      - "EUREKA_URI=http://jws-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jws-config:8888/" 
-    ports:
-      - "8080:8080"
+    environment:
+      - EUREKA_URI
+      - CONFIG_SERVER_URI
     restart: unless-stopped
+    depends_on:
+      - jws-discovery
     volumes:
       - "logdata:/opt/chemaxon/jws/logs"
-    
+    ports:
+      - "8080:8080"
+
 volumes:
   logdata:
   dbdata:
