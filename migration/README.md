@@ -1,6 +1,6 @@
 # Migration from JChem Webservices to JChem Microservices
 
-This project contains a tool to help you transfer your data _from JChem WebServices to JChem Microservices_.
+This project contains a tool to help you transfer your data _from JChem Webservices Classic to JChem Microservices_.
 
 ## Prerequisites
 
@@ -19,4 +19,4 @@ Now run the following command
 
 This will create the _json file(s)_ from your data which you can find in the ```output``` folder.
 
-Now, you can use the file(s) to ```batch insert``` your data with JChem Microservices using the Database Services API.
+Now, you can use the file(s) to ```batch insert``` your data with JChem Microservices using the Database Search Service API.

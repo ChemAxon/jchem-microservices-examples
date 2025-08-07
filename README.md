@@ -2,11 +2,11 @@
 
 This repository holds various examples for JChem Microservices.
 
-* [custom-checker-fixer](./custom-checker-fixer): How to add your custom StructureChecker and StructureFixerImplementations to JMS.
+* [custom-checker-fixer](./custom-checker-fixer): How to add your custom StructureChecker and StructureFixer implementations to JChem Microservices.
 * [docker](./docker): how to dockerize the microservices manually (Moved from [jchem-microservices-docker-example](https://github.com/ChemAxon/jchem-microservices-docker-example))
-* [external-beans](./external-beans): How to add external beans / filters
-* [loadbalance](./loadbalance): how to set up High-Availability with JChem Microservices DB (Moved from [jws-load-balanced-example](https://github.com/ChemAxon/jws-load-balanced-example))
-* [migration](./migration): How to migrate data from JChem Webservices Classic ( / JChem tables ) to JChem Microservices
+* [external-beans](./external-beans): How to add external beans/filters
+* [loadbalance](./loadbalance): how to set up High Availability with the Database Search Service (Moved from [jws-load-balanced-example](https://github.com/ChemAxon/jws-load-balanced-example))
+* [migration](./migration): How to migrate data from JChem Webservices Classic (or from JChem tables) to JChem Microservices
 * [official-docker-images](./official-docker-images): how to use the official docker images
 
 ## Related links

@@ -7,7 +7,7 @@ If you want to use the official images, see the [official-docker-images](../offi
 
 * install **docker**
 * install **docker-compose**
-* copy `jws_unix_21.13.tar.gz` to folder (Download it from here: [JChem Micorservices 21.13](https://chemaxon.com/download?dl=%2Fdata%2Fdownload%2Fjws%2F21.13.0%2Fjws_unix_21.13.tar.gz))
+* copy `jws_unix_<<version>>.tar.gz` to folder (Download it from here: [JChem Micorservices](https://chemaxon.com/download?dl=%2Fdata%2Fdownload%2Fjws))
 * copy `license.cxl` to folder
 
 ## How to run
@@ -19,7 +19,7 @@ If you want to use the official images, see the [official-docker-images](../offi
 The above setup has the following volumes:
 * `dbdata` to save molecules uploaded to `jws-db`
 * `logdata` where you can find all the logs
-* `config` holds all the configurations for the application for more information please see our [documentation](https://docs.chemaxon.com/display/docs/JChem+Microservices)
+* `config` holds all the configurations for the application for more information please see our [documentation](https://docs.chemaxon.com/display/docs/jchem-microservices_common-modules.md#config)
 * `license` is the volume to share the `license.cxl` file between containers
 
 If you want to change any JVM arguments you can pass them to the executables with a `-J` prefix, like:
