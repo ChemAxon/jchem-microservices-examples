@@ -1,4 +1,4 @@
-package com.example.checkerfixer2;
+package example2;
 
 import java.util.List;
 
@@ -15,12 +15,16 @@ import chemaxon.struc.Molecule;
  */
 public class ExampleCheckerResult extends DefaultExternalStructureCheckerResult {
 
-    final int atno;
+    private final int atno;
 
     public ExampleCheckerResult(StructureChecker source, List<MolAtom> atoms,
             List<MolBond> bonds, Molecule molecule, String errorCode, int atno) {
         super(source, atoms, bonds, molecule, errorCode);
         this.atno = atno;
+    }
+
+    public int getAtno() {
+        return atno;
     }
 
 }

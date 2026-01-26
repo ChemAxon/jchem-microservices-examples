@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +24,12 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SequenceWriter;
+import tools.jackson.databind.SequenceWriter;
+import tools.jackson.databind.json.JsonMapper;
 
 import chemaxon.formats.MolExporter;
 import chemaxon.formats.MolImporter;
 import chemaxon.struc.Molecule;
-
-import com.chemaxon.example.exception.NoIdException;
 
 public class TransferData {
 
@@ -44,7 +41,7 @@ public class TransferData {
             throw new IllegalArgumentException("No inputfiles were provided");
         }
         for (String arg : args) {
-            ObjectMapper objectMapper = new ObjectMapper();
+            JsonMapper objectMapper = new JsonMapper();
             try (SequenceWriter writer = objectMapper.writer().writeValues(getOutputFile(arg)).init(true)) {
                 System.out.println("\nProcessing: " + arg);
                 try {
@@ -60,8 +57,8 @@ public class TransferData {
     }
 
     private static void createJsonFromMolecules(SequenceWriter writer, String fileName) throws IOException {
-        try (MolImporter mi = new MolImporter(fileName)) {
-            mi.getMolStream().forEach(molecule -> {
+        try (var importer = new MolImporter(fileName)) {
+            importer.getMolStream().forEach(molecule -> {
                 try {
                     writer.write(moleculeToJson(molecule, fileName));
                 } catch (NoIdException | IOException e) {
@@ -100,7 +97,7 @@ public class TransferData {
     private static long getId(Molecule mol, String fileName) throws NoIdException {
         String id;
 
-        var idObject = mol.getPropertyObject(CD_ID);
+        Object idObject = mol.getPropertyObject(CD_ID);
         if (idObject != null) {
             id = (String) idObject;
         } else if (mol.getName() != null) {

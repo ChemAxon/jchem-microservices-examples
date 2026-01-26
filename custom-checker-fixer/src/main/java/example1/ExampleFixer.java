@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
  *
  */
 
-package com.chemaxon.example.exception;
+package example1;
 
-import java.io.Serial;
+import chemaxon.checkers.result.StructureCheckerResult;
+import chemaxon.fixers.AbstractStructureFixer;
+import chemaxon.struc.PeriodicSystem;
 
-public class NoIdException extends Exception {
+/**
+ * Example structure fixer without parameters. The related checker is {@link ExampleChecker}.
+ */
+public class ExampleFixer extends AbstractStructureFixer {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    public NoIdException(String fileName) {
-        super("No usable id was provided for molecule in: " + fileName);
-    }
-
-    public NoIdException(String fileName, Throwable t) {
-        super("No usable id was provided for molecule in: " + fileName, t);
+    @Override
+    public boolean fix(StructureCheckerResult checkerResult) {
+        checkerResult.getAtoms().forEach(atom -> atom.setAtno(PeriodicSystem.O));
+        return true;
     }
 
 }

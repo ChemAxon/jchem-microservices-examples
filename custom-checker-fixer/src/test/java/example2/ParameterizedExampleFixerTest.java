@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
  * limitations under the License.
  *
  */
-package com.example.checkerfixer2;
+
+package example2;
 
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import chemaxon.formats.MolImporter;
 import chemaxon.struc.MolAtom;
+import chemaxon.struc.Molecule;
 import chemaxon.struc.PeriodicSystem;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParameterizedExampleFixerTest {
@@ -33,31 +33,31 @@ class ParameterizedExampleFixerTest {
     @Test
     @DisplayName("Fixer replaces heavy atoms with specified atom")
     void testFix() throws Exception {
-        var mol = MolImporter.importMol("CNCl");
+        Molecule molecule = MolImporter.importMol("CNCl");
 
         var checker = new ParameterizedExampleChecker();
         var fixer = new ParameterizedExampleFixer();
-        fixer.fix(checker.check(mol));
+        fixer.fix(checker.check(molecule));
 
         assertEquals(
                 List.of(PeriodicSystem.C, PeriodicSystem.N, PeriodicSystem.O),
-                mol.atoms().stream().map(MolAtom::getAtno).toList()
+                molecule.atoms().stream().map(MolAtom::getAtno).toList()
         );
 
         checker.setAtomicNumber(PeriodicSystem.N);
-        fixer.fix(checker.check(mol));
+        fixer.fix(checker.check(molecule));
 
         assertEquals(
                 List.of(PeriodicSystem.C, PeriodicSystem.N, PeriodicSystem.N),
-                mol.atoms().stream().map(MolAtom::getAtno).toList()
+                molecule.atoms().stream().map(MolAtom::getAtno).toList()
         );
 
         checker.setAtomicNumber(PeriodicSystem.C);
-        fixer.fix(checker.check(mol));
+        fixer.fix(checker.check(molecule));
 
         assertEquals(
                 List.of(PeriodicSystem.C, PeriodicSystem.C, PeriodicSystem.C),
-                mol.atoms().stream().map(MolAtom::getAtno).toList()
+                molecule.atoms().stream().map(MolAtom::getAtno).toList()
         );
     }
 

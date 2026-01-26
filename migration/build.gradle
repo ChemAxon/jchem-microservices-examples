@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ compileJava {
 dependencies {
     implementation "com.chemaxon:io-all:${chemaxonReleaseVersion}"
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "tools.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
 tasks.register('transferData', JavaExec) {

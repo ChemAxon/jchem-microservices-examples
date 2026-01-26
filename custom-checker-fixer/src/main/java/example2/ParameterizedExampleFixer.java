@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *
  */
 
-package com.example.checkerfixer2;
+package example2;
 
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.fixers.AbstractStructureFixer;
@@ -29,7 +29,7 @@ public class ParameterizedExampleFixer extends AbstractStructureFixer {
     public boolean fix(StructureCheckerResult checkerResult) {
         // Fixers cannot have parameters on their own, but they always receive the result object that was returned by
         // the connected checker, so they can use that to pass information.
-        int atno = ((ExampleCheckerResult) checkerResult).atno;
+        int atno = ((ExampleCheckerResult) checkerResult).getAtno();
         checkerResult.getAtoms().forEach(atom -> atom.setAtno(atno));
         return true;
     }

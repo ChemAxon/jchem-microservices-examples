@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
  *
  */
 
-package com.example.checkerfixer1;
+package com.chemaxon.example;
 
-import chemaxon.checkers.result.StructureCheckerResult;
-import chemaxon.fixers.AbstractStructureFixer;
-import chemaxon.struc.PeriodicSystem;
+import java.io.Serial;
 
-/**
- * Example structure fixer without parameters. The related checker is {@link ExampleChecker}.
- */
-public class ExampleFixer extends AbstractStructureFixer {
+public class NoIdException extends Exception {
 
-    @Override
-    public boolean fix(StructureCheckerResult checkerResult) {
-        checkerResult.getAtoms().forEach(atom -> atom.setAtno(PeriodicSystem.O));
-        return true;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    public NoIdException(String fileName) {
+        super("No usable ID was provided for molecule in: " + fileName);
+    }
+
+    public NoIdException(String fileName, Throwable t) {
+        super("No usable ID was provided for molecule in: " + fileName, t);
     }
 
 }

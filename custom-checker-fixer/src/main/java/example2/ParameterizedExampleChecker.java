@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *
  */
 
-package com.example.checkerfixer2;
+package example2;
 
 import java.util.List;
 import java.util.Map;
@@ -26,12 +26,10 @@ import chemaxon.struc.MolAtom;
 import chemaxon.struc.Molecule;
 import chemaxon.struc.PeriodicSystem;
 
-import static java.util.stream.Collectors.toList;
-
 /**
  * Example structure checker with parameters. The related fixer is {@link ParameterizedExampleFixer}.
  * <p>
- * For a simple variant, see {@link com.example.checkerfixer1.ExampleChecker}.
+ * For a simple variant, see {@link example1.ExampleChecker}.
  */
 public class ParameterizedExampleChecker extends ExternalStructureChecker {
 
@@ -61,7 +59,7 @@ public class ParameterizedExampleChecker extends ExternalStructureChecker {
     protected StructureCheckerResult check1(Molecule molecule) {
         List<MolAtom> atomsWithMoreProtons = molecule.atoms().stream()
                 .filter(atom -> atom.getAtno() > atno)
-                .collect(toList());
+                .toList();
 
         // If there is no error, null should be returned
         if (atomsWithMoreProtons.isEmpty()) {

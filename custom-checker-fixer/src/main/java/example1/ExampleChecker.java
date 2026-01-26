@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 Chemaxon Ltd.
+ * Copyright 2019-2026 Chemaxon Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *
  */
 
-package com.example.checkerfixer1;
+package example1;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import chemaxon.struc.PeriodicSystem;
 /**
  * Simple example structure checker without parameters. The related fixer is {@link ExampleFixer}.
  * <p>
- * For a parameterized variant, see {@link com.example.checkerfixer2.ParameterizedExampleChecker}.
+ * For a parameterized variant, see {@link example2.ParameterizedExampleChecker}.
  */
 public class ExampleChecker extends ExternalStructureChecker {
 
