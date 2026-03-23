@@ -6,7 +6,9 @@
 then be prepared to do your own security settings. Feel free to change any parts
 to make your life easier, this version only solves the purpose to get you started.
 
-## Prerequisites
+## Prerequisites and setup
+
+### Docker
 
 In order to download the official Docker images of JChem Microservices, you need to install [Docker](https://www.docker.com/) on your system and configure it to access the [Chemaxon Public Repository](https://docs.chemaxon.com/display/docs/general_public-repository.md). After acquiring your credentials, you can simply call
 
@@ -16,29 +18,45 @@ docker login chemaxon.jfrog.io
 
 to set up Docker to access the repository.
 
-For this example, you will also need licenses for the JChem Microservices modules. Put your `license.cxl` file to this folder, next to the docker compose file.
+### License
 
-## How to run
+For these examples, you will also need licenses for the JChem Microservices modules. We show examples for both license key and
+license file usage. Follow step-by-step setup below based on your license type.
 
-1. Check the JChem Microservices version in the `.env` file, and change it to the one you need
-2. Execute `docker-compose up`
+### How to run
 
-## What is happening in this example?
+#### With license file
+
+1. Navigate to [license-file](./license-file)
+2. Put your `license.cxl` file to this folder, next to the docker compose file.
+3. Check the JChem Microservices version in the `.env` file, and change it to the one you need
+4. Execute `docker-compose up`
+
+#### With license key
+
+1. Navigate to [license-key](./license-key)
+2. Fill `LICENSE_KEY` variable in `.env` file with your `license key`
+3. Check the JChem Microservices version in the `.env` file, and change it to the one you need
+4. Execute `docker-compose up`
+
+## Config and additional info
+
+### What is happening in this example?
 
 The docker-compose file has a description of the JChem Microservices system
 wiht a central license server. The license server is a module we build during
 __UP__ command, and it is based on [Nginx](https://hub.docker.com/_/nginx) image.
 
-## How to access the system?
+### How to access the system?
 
 In the end the port 8080 will be open and forwarded towards the outer world. 
 
-## How to update the license file?
+### How to update the license file?
 
 If you already have a license server then the related docker image (`cxn/jms/nginx-license-server:latest`) should be deleted first.
 The new license file should be placed in the folder and docker compose can be started &ndash; it re-builds the license server automatically.
 
-## What could be on volumes?
+### What could be on volumes?
 
 * `/app/jws/jws-db/data` folder contains all the data you upload to the Database Search Service
 * `/app/jws/jws-config/common-config` folder contains all the configurations for the services
@@ -49,9 +67,9 @@ needs, but this is only a kick-starter example, it does not aim to teach docker
 basics. If you want to restructure the containers, feel free. If you would like 
 to save more persistent data, than it is up to you.
 
-## How to start with HTTPS
+### How to start with HTTPS
 
-The files in the [https](./https) folder are a variant of this example where `jms-gateway` is configured with HTTPS access.
+The files in the [https](./https) folder are a variant of the `license-file` example where `jms-gateway` is configured with HTTPS access.
 Necessary configurations in the [https/.env](https/.env) file should be updated before execution:
 * KEY_STORE_FILE - Key store file name. It should be placed next to the `https/docker-compose.yml` file
 * KEY_STORE_PASSWORD - Password of keystore
