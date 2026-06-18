@@ -1,5 +1,6 @@
 # How to create Docker images of JChem Microservices manually
 
+> [!WARNING]
 > This example is about creating docker images of JChem Microservices _manually_.
 If you want to use the official images, see the [official-docker-images](../official-docker-images) example.
 

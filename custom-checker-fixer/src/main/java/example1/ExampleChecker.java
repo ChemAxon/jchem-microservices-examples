@@ -24,7 +24,7 @@ import chemaxon.checkers.result.DefaultExternalStructureCheckerResult;
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.struc.MolAtom;
 import chemaxon.struc.Molecule;
-import chemaxon.struc.PeriodicSystem;
+import chemaxon.struc.PeriodicTable;
 
 /**
  * Simple example structure checker without parameters. The related fixer is {@link ExampleFixer}.
@@ -40,7 +40,7 @@ public class ExampleChecker extends ExternalStructureChecker {
     @Override
     protected StructureCheckerResult check1(Molecule molecule) {
         List<MolAtom> atomsWithMoreProtonThanOxygen = molecule.atoms().stream()
-                .filter(atom -> atom.getAtno() > PeriodicSystem.O)
+                .filter(atom -> atom.getAtno() > PeriodicTable.O)
                 .toList();
 
         // If there is no error, null should be returned

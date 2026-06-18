@@ -32,13 +32,13 @@ repositories {
 }
 
 compileJava {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
-    implementation "com.chemaxon:structurechecker:${chemaxonReleaseVersion}"
-    implementation "com.chemaxon:io-all:${chemaxonReleaseVersion}"
+    implementation "com.chemaxon:chemaxon-structurechecker:${chemaxonReleaseVersion}"
+    implementation "com.chemaxon:chemaxon-io-all:${chemaxonReleaseVersion}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"

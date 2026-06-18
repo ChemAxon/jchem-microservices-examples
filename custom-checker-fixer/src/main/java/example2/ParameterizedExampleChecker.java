@@ -24,7 +24,7 @@ import chemaxon.checkers.ExternalStructureChecker;
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.struc.MolAtom;
 import chemaxon.struc.Molecule;
-import chemaxon.struc.PeriodicSystem;
+import chemaxon.struc.PeriodicTable;
 
 /**
  * Example structure checker with parameters. The related fixer is {@link ParameterizedExampleFixer}.
@@ -35,7 +35,7 @@ public class ParameterizedExampleChecker extends ExternalStructureChecker {
 
     private static final String ERROR_CODE = "MyCheckerError";
 
-    private int atno = PeriodicSystem.O;
+    private int atno = PeriodicTable.O;
 
     public ParameterizedExampleChecker() {
         super(ERROR_CODE);

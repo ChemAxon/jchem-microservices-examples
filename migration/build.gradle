@@ -33,12 +33,12 @@ repositories {
 }
 
 compileJava {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
-    implementation "com.chemaxon:io-all:${chemaxonReleaseVersion}"
+    implementation "com.chemaxon:chemaxon-io-all:${chemaxonReleaseVersion}"
 
     implementation "tools.jackson.core:jackson-databind:${jacksonVersion}"
 }

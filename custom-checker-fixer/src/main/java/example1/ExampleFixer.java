@@ -19,7 +19,7 @@ package example1;
 
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.fixers.AbstractStructureFixer;
-import chemaxon.struc.PeriodicSystem;
+import chemaxon.struc.PeriodicTable;
 
 /**
  * Example structure fixer without parameters. The related checker is {@link ExampleChecker}.
@@ -28,7 +28,7 @@ public class ExampleFixer extends AbstractStructureFixer {
 
     @Override
     public boolean fix(StructureCheckerResult checkerResult) {
-        checkerResult.getAtoms().forEach(atom -> atom.setAtno(PeriodicSystem.O));
+        checkerResult.getAtoms().forEach(atom -> atom.setAtno(PeriodicTable.O));
         return true;
     }
 

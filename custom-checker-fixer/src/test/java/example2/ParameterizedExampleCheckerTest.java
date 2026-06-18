@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import chemaxon.checkers.result.StructureCheckerResult;
 import chemaxon.formats.MolImporter;
 import chemaxon.struc.Molecule;
-import chemaxon.struc.PeriodicSystem;
+import chemaxon.struc.PeriodicTable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -61,7 +61,7 @@ class ParameterizedExampleCheckerTest {
     @DisplayName("Passing the atomic number in the setter changes the checker")
     void useSetter() throws Exception {
         var checker = new ParameterizedExampleChecker();
-        checker.setAtomicNumber(PeriodicSystem.C);
+        checker.setAtomicNumber(PeriodicTable.C);
         Molecule molecule = MolImporter.importMol(MOLECULE);
 
         StructureCheckerResult result = checker.check(molecule);

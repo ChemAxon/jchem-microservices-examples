@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import chemaxon.formats.MolImporter;
 import chemaxon.struc.Molecule;
-import chemaxon.struc.PeriodicSystem;
+import chemaxon.struc.PeriodicTable;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,9 +40,9 @@ class ExampleFixerTest {
 
         assertAll(
                 () -> assertEquals(3, molecule.atoms().size()),
-                () -> assertEquals(PeriodicSystem.C, molecule.getAtom(0).getAtno()),
-                () -> assertEquals(PeriodicSystem.N, molecule.getAtom(1).getAtno()),
-                () -> assertEquals(PeriodicSystem.O, molecule.getAtom(2).getAtno())
+                () -> assertEquals(PeriodicTable.C, molecule.getAtom(0).getAtno()),
+                () -> assertEquals(PeriodicTable.N, molecule.getAtom(1).getAtno()),
+                () -> assertEquals(PeriodicTable.O, molecule.getAtom(2).getAtno())
         );
     }
 

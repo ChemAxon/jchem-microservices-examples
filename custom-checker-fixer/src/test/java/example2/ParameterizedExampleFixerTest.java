@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import chemaxon.formats.MolImporter;
 import chemaxon.struc.MolAtom;
 import chemaxon.struc.Molecule;
-import chemaxon.struc.PeriodicSystem;
+import chemaxon.struc.PeriodicTable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,23 +40,23 @@ class ParameterizedExampleFixerTest {
         fixer.fix(checker.check(molecule));
 
         assertEquals(
-                List.of(PeriodicSystem.C, PeriodicSystem.N, PeriodicSystem.O),
+                List.of(PeriodicTable.C, PeriodicTable.N, PeriodicTable.O),
                 molecule.atoms().stream().map(MolAtom::getAtno).toList()
         );
 
-        checker.setAtomicNumber(PeriodicSystem.N);
+        checker.setAtomicNumber(PeriodicTable.N);
         fixer.fix(checker.check(molecule));
 
         assertEquals(
-                List.of(PeriodicSystem.C, PeriodicSystem.N, PeriodicSystem.N),
+                List.of(PeriodicTable.C, PeriodicTable.N, PeriodicTable.N),
                 molecule.atoms().stream().map(MolAtom::getAtno).toList()
         );
 
-        checker.setAtomicNumber(PeriodicSystem.C);
+        checker.setAtomicNumber(PeriodicTable.C);
         fixer.fix(checker.check(molecule));
 
         assertEquals(
-                List.of(PeriodicSystem.C, PeriodicSystem.C, PeriodicSystem.C),
+                List.of(PeriodicTable.C, PeriodicTable.C, PeriodicTable.C),
                 molecule.atoms().stream().map(MolAtom::getAtno).toList()
         );
     }
