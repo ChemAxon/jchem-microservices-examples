@@ -23,7 +23,7 @@ Send a request with content:
 {
   "checkerSettings": [
     {
-      "checkerClass": "com.example.checkerfixer1.ExampleChecker",
+      "checkerClass": "example1.ExampleChecker",
       "displayName": "custom checker"
     }
   ],
@@ -59,13 +59,13 @@ Example input:
   "settings": [
     {
       "checkerSettings": {
-        "checkerClass": "com.example.checkerfixer1.ExampleChecker",
+        "checkerClass": "example1.ExampleChecker",
         "displayName": "custom checker"
       },
       "fixerSettings": {
         "displayName": "custom fixer",
         "exportFormat": "smiles",
-        "fixerClass": "com.example.checkerfixer1.ExampleFixer"
+        "fixerClass": "example1.ExampleFixer"
       }
     }
   ],
@@ -82,7 +82,7 @@ Chlorine atoms, but Oxygens in their places.
 
 ## How to pass parameters to your checkers
 
-See the classes in the `com.example.checkerfixer2` package.
+See the classes in the `example2` package.
 
 To use the checker, send a request like below to `/rest-v1/checker/`.
 
@@ -90,7 +90,7 @@ To use the checker, send a request like below to `/rest-v1/checker/`.
 {
   "checkerSettings": [
     {
-      "checkerClass": "com.example.checkerfixer2.ParameterizedExampleChecker",
+      "checkerClass": "example2.ParameterizedExampleChecker",
       "displayName": "parameterized custom checker",
       "atomicNumber": 6
     }
@@ -117,14 +117,14 @@ parameter to the checker as the fixer cannot have a parameter on its own.
   "settings": [
     {
       "checkerSettings": {
-        "checkerClass": "com.example.checkerfixer2.ParameterizedExampleChecker",
+        "checkerClass": "example2.ParameterizedExampleChecker",
         "displayName": "parameterized custom checker",
         "atomicNumber": 6
       },
       "fixerSettings": {
         "displayName": "parameterized custom fixer",
         "exportFormat": "smiles",
-        "fixerClass": "com.example.checkerfixer2.ParameterizedExampleFixer"
+        "fixerClass": "example2.ParameterizedExampleFixer"
       }
     }
   ],
