@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# In standalone mode each service runs on its own, without the Config,
+# Discovery and Gateway services. Every module is reachable directly on its
+# own port and exposes its Swagger UI at http://localhost:<port>/API/.
+
 services:
   postgres:
     image: postgres:18
@@ -24,105 +28,87 @@ services:
     configs:
       - source: postgres-init-sql
         target: /docker-entrypoint-initdb.d/create-task-manager-db.sql
-  jms-config:
-    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-config:${JMS_VERSION}
+  jms-io:
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-io:${JMS_VERSION}
     environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
       - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-  jms-discovery:
-    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-discovery:${JMS_VERSION}
-    environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-config
-  jms-calculations:
-    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-calculations:${JMS_VERSION}
-    environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-discovery
+    ports:
+      - "8061:8061"
   jms-db:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-db:${JMS_VERSION}
     environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
       - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
+      - "COM_CHEMAXON_TASKMANAGER_SERVICE=http://jms-taskmanager:8068"
       - "CXN_DB_DIALECT=POSTGRESQL"
       - "CXN_DB_JDBC_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
       - "CXN_DB_JDBC_USER=${POSTGRES_USER}"
       - "CXN_DB_JDBC_PASSWORD=${POSTGRES_PASSWORD}"
     depends_on:
-      - jms-discovery
       - postgres
-  jms-io:
-    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-io:${JMS_VERSION}
-    environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-discovery
-  jms-markush:
-    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-markush:${JMS_VERSION}
-    environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-discovery
-  jms-reactor:
-    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-reactor:${JMS_VERSION}
-    environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-discovery
+    ports:
+      - "8062:8062"
   jms-structure:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-structure:${JMS_VERSION}
     environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
       - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-discovery
+    ports:
+      - "8063:8063"
+  jms-calculations:
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-calculations:${JMS_VERSION}
+    environment:
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
+    ports:
+      - "8064:8064"
+  jms-markush:
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-markush:${JMS_VERSION}
+    environment:
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
+    ports:
+      - "8065:8065"
   jms-structurechecker:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-structurechecker:${JMS_VERSION}
     environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
       - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-discovery
+    ports:
+      - "8066:8066"
+  jms-reactor:
+    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-reactor:${JMS_VERSION}
+    environment:
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
+      - "COM_CHEMAXON_TASKMANAGER_SERVICE=http://jms-taskmanager:8068"
+    ports:
+      - "8067:8067"
   jms-taskmanager:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-taskmanager:${JMS_VERSION}
     environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
+      - "EUREKA_CLIENT_ENABLED=false"
+      - "SPRING_CLOUD_CONFIG_ENABLED=false"
       - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
+      - "COM_CHEMAXON_TASKMANAGER_SERVICE_JWSDB=http://jms-db:8062"
+      - "COM_CHEMAXON_TASKMANAGER_SERVICE_JWS-REACTOR=http://jms-reactor:8067"
       - "CXN_TASK_DRIVER=org.postgresql.Driver"
       - "CXN_TASK_DIALECT=org.hibernate.dialect.PostgreSQLDialect"
       - "CXN_TASK_JDBC_URL=jdbc:postgresql://postgres:5432/${POSTGRES_TASK_DB}"
       - "CXN_TASK_JDBC_USER=${POSTGRES_USER}"
       - "CXN_TASK_JDBC_PASSWORD=${POSTGRES_PASSWORD}"
     depends_on:
-      - jms-discovery
       - postgres
-  jms-gateway:
-    image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-gateway:${JMS_VERSION}
-    environment:
-      - "EUREKA_URI=http://jms-discovery:8761/"
-      - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
-    depends_on:
-      - jms-discovery
     ports:
-      - "8080:8080"
+      - "8068:8068"
 
 volumes:
   postgres-data:

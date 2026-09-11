@@ -1,4 +1,4 @@
-# Copyright 2020-2025 Chemaxon Ltd.
+# Copyright 2020-2026 Chemaxon Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,25 +13,29 @@
 # limitations under the License.
 
 services:
-  license-server:
-    image: cxn/jms/nginx-license-server
-    build:
-      context: ./
-      dockerfile: nginx-license-server.dockerfile
+  postgres:
+    image: postgres:18
+    environment:
+      - "POSTGRES_DB=${POSTGRES_DB}"
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    configs:
+      - source: postgres-init-sql
+        target: /docker-entrypoint-initdb.d/create-task-manager-db.sql
   jms-config:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-config:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
-    depends_on:
-      - license-server
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
   jms-discovery:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-discovery:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
     depends_on:
       - jms-config
   jms-calculations:
@@ -39,7 +43,7 @@ services:
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
     depends_on:
       - jms-discovery
   jms-db:
@@ -47,15 +51,20 @@ services:
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
+      - "CXN_DB_DIALECT=POSTGRESQL"
+      - "CXN_DB_JDBC_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
+      - "CXN_DB_JDBC_USER=${POSTGRES_USER}"
+      - "CXN_DB_JDBC_PASSWORD=${POSTGRES_PASSWORD}"
     depends_on:
       - jms-discovery
+      - postgres
   jms-io:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-io:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
     depends_on:
       - jms-discovery
   jms-markush:
@@ -63,7 +72,7 @@ services:
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
     depends_on:
       - jms-discovery
   jms-reactor:
@@ -71,7 +80,7 @@ services:
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
     depends_on:
       - jms-discovery
   jms-structure:
@@ -79,7 +88,7 @@ services:
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
     depends_on:
       - jms-discovery
   jms-structurechecker:
@@ -87,7 +96,7 @@ services:
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
     depends_on:
       - jms-discovery
   jms-taskmanager:
@@ -95,13 +104,21 @@ services:
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
+      - "CXN_TASK_DRIVER=org.postgresql.Driver"
+      - "CXN_TASK_DIALECT=org.hibernate.dialect.PostgreSQLDialect"
+      - "CXN_TASK_JDBC_URL=jdbc:postgresql://postgres:5432/${POSTGRES_TASK_DB}"
+      - "CXN_TASK_JDBC_USER=${POSTGRES_USER}"
+      - "CXN_TASK_JDBC_PASSWORD=${POSTGRES_PASSWORD}"
+    depends_on:
+      - jms-discovery
+      - postgres
   jms-gateway:
     image: chemaxon.jfrog.io/cxn-docker-release/chemaxon/jms-gateway:${JMS_VERSION}
     environment:
       - "EUREKA_URI=http://jms-discovery:8761/"
       - "CONFIG_SERVER_URI=http://jms-config:8888/"
-      - "CHEMAXON_LICENSE_URL=http://license-server/license.cxl"
+      - "CHEMAXON_LICENSE_SERVER_KEY=${LICENSE_KEY}"
       - "SERVER_SSL_KEY-STORE=/app/jws/${KEY_STORE_FILE}"
       - "SERVER_SSL_KEY-STORE-PASSWORD=${KEY_STORE_PASSWORD}"
       - "SERVER_SSL_KEYSTORETYPE=${KEY_STORE_TYPE}"
@@ -111,3 +128,14 @@ services:
       - ./${KEY_STORE_FILE}:/app/jws/${KEY_STORE_FILE}
     ports:
       - "8080:8080"
+
+volumes:
+  postgres-data:
+
+# The base database (POSTGRES_DB) is created by the postgres image. This inline
+# config adds a second database (POSTGRES_TASK_DB) for the Task Manager Service
+# in the same container. It runs only on first initialization of an empty data
+# directory.
+configs:
+  postgres-init-sql:
+    content: "CREATE DATABASE ${POSTGRES_TASK_DB};"
